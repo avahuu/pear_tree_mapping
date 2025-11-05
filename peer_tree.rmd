@@ -1,0 +1,63 @@
+---
+title: "pear_tree"
+output: html_document
+date: "2025-11-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r setup, include=FALSE, cache=F}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, cache=TRUE, autodep = TRUE, message = FALSE, progress_bar = FALSE)
+
+library(tidyverse) 
+library(dplyr) 
+library(ggplot2) 
+library(knitr) 
+library(psych)
+library(lme4)
+library(boot)
+library(ggeffects) 
+library(DescTools)
+library(tidycensus)
+library(xml2)
+library(tmap)
+library(tmaptools)
+library(leaflet)
+library(sf)
+library(leaflet.extras)
+library(raster)
+library(tigris)
+library(sp)
+library(scales)
+library(stringi)
+library(leaflegend)
+
+
+```
+
+## Map points - from geojson file exported from QGIS
+
+```{r pear}
+pear <- st_read("~/GitHub/pear_tree_mapping/peartrees.geojson") %>% 
+  st_transform(4326) # safety of unprojected CRS
+
+qtm(pear)
+glimpse(pear)
+
+pearpopup <- paste0("<b>TYPE: ", pear$Common_Nam, "</b><br />Height: ", pear$HEIGHT_FT)
+
+leaflet(pear) %>%
+                addTiles() %>%
+                 addSymbolsSize(values = as.numeric(pear$HEIGHT_FT),
+                 lat = ~Latitude, 
+                 lng = ~Longitude,
+                 shape = 'triangle',
+                 color = 'green',
+                 fillColor = 'green',
+                 opacity = .5,
+                 popup=pearpopup,
+                 baseSize = 5) 
+```
