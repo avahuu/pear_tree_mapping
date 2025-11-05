@@ -4,11 +4,6 @@ output: html_document
 date: "2025-11-05"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-
 ```{r setup, include=FALSE, cache=F}
 knitr::opts_chunk$set(echo = TRUE, error = TRUE, cache=TRUE, autodep = TRUE, message = FALSE, progress_bar = FALSE)
 
